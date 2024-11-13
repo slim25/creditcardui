@@ -9,8 +9,8 @@ function Login({ setTokens }) {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:8080/api/auth/login', { username, password });
-            const { accessToken, refreshToken } = response.data;
-            setTokens(accessToken, refreshToken);
+            const { accessToken, refreshToken, role } = response.data;
+            setTokens(accessToken, refreshToken, role);
         } catch (error) {
             console.error("Login failed", error);
             alert("Login failed. Please check your credentials and try again.");

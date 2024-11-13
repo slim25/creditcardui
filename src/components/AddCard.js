@@ -3,14 +3,13 @@ import axios from 'axios';
 import sha256 from 'crypto-js/sha256';
 import InputMask from 'react-input-mask';
 
-function AddCard({ accessToken, onCardAdded }) {
+function AddCard({ onCardAdded }) {
     const [cardNumber, setCardNumber] = useState('');
     const [cardHolderName, setCardHolderName] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
     const [cvv, setCvv] = useState('');
 
     const isValidCardNumber = (number) => {
-        // Basic Luhn algorithm for credit card validation
         let sum = 0;
         let shouldDouble = false;
         for (let i = number.length - 1; i >= 0; i--) {
@@ -51,8 +50,8 @@ function AddCard({ accessToken, onCardAdded }) {
             return;
         }
 
-        // Simulate tokenization by hashing the card number (ideally we would need to use paymetric service to tokinize)
-        const cardToken = sha256(formattedCardNumber).toString();
+        // emulating card tokenization
+        const cardToken = sha256(formattedCardNumber + cvv).toString();
 
         try {
             const response = await axios.post(
@@ -69,44 +68,47 @@ function AddCard({ accessToken, onCardAdded }) {
             onCardAdded(response.data);
             alert("Card added successfully!");
 
-
+            // Reset form fields
             setCardNumber('');
             setCardHolderName('');
             setExpiryDate('');
             setCvv('');
         } catch (error) {
-            console.error("Error adding card", error.response ? error.response.data : error.message);
+            const errorMessage = error.response?.data || "An error occurred while adding the card. Please try again.";
+            alert(errorMessage);
         }
     };
 
     return (
-        <form onSubmit={handleAddCard}>
-            <InputMask
-                mask="9999 9999 9999 9999"
-                placeholder="Card Number"
-                value={cardNumber}
-                onChange={(e) => setCardNumber(e.target.value)}
-            />
-            <input
-                type="text"
-                placeholder="Card Holder Name"
-                value={cardHolderName}
-                onChange={(e) => setCardHolderName(e.target.value)}
-            />
-            <InputMask
-                mask="99/99"
-                placeholder="Expiry Date (MM/YY)"
-                value={expiryDate}
-                onChange={(e) => setExpiryDate(e.target.value)}
-            />
-            <InputMask
-                mask="999"
-                placeholder="CVV"
-                value={cvv}
-                onChange={(e) => setCvv(e.target.value)}
-            />
-            <button type="submit">Add Card</button>
-        </form>
+        <div>
+            <form onSubmit={handleAddCard}>
+                <InputMask
+                    mask="9999 9999 9999 9999"
+                    placeholder="Card Number"
+                    value={cardNumber}
+                    onChange={(e) => setCardNumber(e.target.value)}
+                />
+                <input
+                    type="text"
+                    placeholder="Card Holder Name"
+                    value={cardHolderName}
+                    onChange={(e) => setCardHolderName(e.target.value)}
+                />
+                <InputMask
+                    mask="99/99"
+                    placeholder="Expiry Date (MM/YY)"
+                    value={expiryDate}
+                    onChange={(e) => setExpiryDate(e.target.value)}
+                />
+                <InputMask
+                    mask="999"
+                    placeholder="CVV"
+                    value={cvv}
+                    onChange={(e) => setCvv(e.target.value)}
+                />
+                <button type="submit">Add Card</button>
+            </form>
+        </div>
     );
 }
 
