@@ -20,9 +20,12 @@ function AdminView() {
         fetchUserProfiles();
     }, []);
 
-    const handleDeleteCard = async (cardToken) => {
+    const handleDeleteCard = async (cardToken, userId) => {
         try {
-            await axios.delete(`http://localhost:8080/api/credit-cards/${cardToken}`);
+            await axios.delete('http://localhost:8080/api/credit-cards', {
+                            headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+                            data: { token: cardToken, userId: userId }
+                        });
             setUserProfiles(userProfiles.map(profile => ({
                 ...profile,
                 creditCards: profile.creditCards.filter(card => card.cardToken !== cardToken)
@@ -57,7 +60,7 @@ function AdminView() {
                                 {profile.creditCards.map(card => (
                                     <li key={card.cardToken}>
                                         {card.cardHolderName} - {card.maskedCardNumber}
-                                        <button onClick={() => handleDeleteCard(card.cardToken)}>Delete</button>
+                                        <button onClick={() => handleDeleteCard(card.cardToken, profile.userProfile.userId)}>Delete</button>
                                     </li>
                                 ))}
                             </ul>
