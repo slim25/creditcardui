@@ -1,70 +1,40 @@
-# Getting Started with Create React App
+# Credit Card Management Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React-based frontend for the `creditcardAPI`, providing a user interface for managing user profiles, credit cards, and activity logs. This frontend application enables user registration, profile management, and secure access to card and activity information with role-based controls.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+* **User Authentication & Role-Based UI**:
+  * **USER**: Register, update profile, add and view credit cards.
+  * **ADMIN**: View all users, manage user credit cards, and view user activity logs.
+* **Card Tokenization**: Implements card tokenization on the frontend using the Luhn algorithm for validation.
 
-### `npm start`
+## Setup & Run
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. **Environment Requirements**:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+    `Node.js (v14+ recommended)`
+4. **Installation**: Navigate to `creditcardUI` and install dependencies:
 
-### `npm test`
+    `npm install`
+9. **Running in Development Mode**:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    `npm start`
 
-### `npm run build`
+    The application will be accessible at http://localhost:3000.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+16. **Dockerized Deployment**: The frontend is also included in the `docker-compose` setup of the `creditcardAPI` backend repository. Running `docker-compose up --build` in the backend directory will start both the frontend and backend containers.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Usage
 
-### `npm run eject`
+#### User Actions
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+* **Registration**: Users can register by clicking the "Register" button. Duplicate usernames are not allowed.
+* **Profile Management**: Upon registration and login, `USER` role users can populate profile details (name, email, phone) and add credit cards.
+* **Card Management**: `USER` users can add cards, which are tokenized and validated using the Luhn algorithm. Card details are securely hashed before storage.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### Admin Actions
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* **Manage User Credit Cards**: `ADMIN` users can view and delete credit cards associated with any user.
+* **View Activity Logs**: Admins can view a history of user activities, including credit card additions and profile updates.

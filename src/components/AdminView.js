@@ -26,10 +26,15 @@ function AdminView() {
                             headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
                             data: { token: cardToken, userId: userId }
                         });
-            setUserProfiles(userProfiles.map(profile => ({
-                ...profile,
-                creditCards: profile.creditCards.filter(card => card.cardToken !== cardToken)
-            })));
+            setUserProfiles(userProfiles.map(profile => {
+                if (profile.userProfile.userId === userId) {
+                    return {
+                        ...profile,
+                        creditCards: profile.creditCards.filter(card => card.cardToken !== cardToken)
+                    };
+                }
+                return profile;
+            }));
 
             alert("Credit card removed successfully!");
         } catch (error) {

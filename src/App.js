@@ -27,7 +27,7 @@ function App() {
     const handleLogout = () => {
         localStorage.clear();
         delete axios.defaults.headers.common['Authorization'];
-        window.location.href = '/login';
+        window.location.href = '/';
     };
 
     const refreshAccessToken = async (token) => {
@@ -62,7 +62,7 @@ function App() {
                 return Promise.reject(error);
             }
 
-            if (error.response.data?.error === "refresh_token_expired") {
+            if (error.response.data === "refresh_token_expired") {
                 handleLogout();
                 alert("Your session has expired. Please log in again.");
                 return Promise.reject(new Error("Session expired. Please log in again."));
@@ -93,15 +93,6 @@ function App() {
 
     const handleCardAdded = (newCard) => setCards([...cards, newCard]);
 
-    const handleDeleteCard = async (cardToken) => {
-        try {
-            await axios.delete(`http://localhost:8080/api/credit-cards/${cardToken}`);
-            setCards(cards.filter(card => card.cardToken !== cardToken));
-        } catch (error) {
-            console.error("Error deleting card:", error);
-        }
-    };
-
     return (
         <div className="App">
             <h1>Credit Card Management System</h1>
@@ -125,7 +116,7 @@ function App() {
                         <>
                             <UserProfileForm />
                             <AddCard accessToken={accessToken} onCardAdded={handleCardAdded} />
-                            <CardList cards={cards} onDeleteCard={handleDeleteCard} />
+                            <CardList cards={cards} />
                         </>
                     )}
                 </>
